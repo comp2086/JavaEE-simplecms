@@ -11,6 +11,7 @@
                             <th></th>
                             <th>First Name</th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -21,6 +22,7 @@
                                 <td>${counter}</td>
                                 <td>${user.firstName}</td>
                                 <td><button type="button" class="btn btn-danger" onclick='location.href = "users?action=delete&id=${user.id}"'>Delete</button></td>
+                                <td><button type="button" class="btn btn-info" onclick='location.href = "users?action=edit&id=${user.id}"'>Edit</button></td>
                             </tr>
                         </c:forEach>
                     </tbody>

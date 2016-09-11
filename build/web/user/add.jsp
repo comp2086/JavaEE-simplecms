@@ -13,7 +13,8 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-9 col-sm-offset-3">
-                        <button type="submit" class="btn btn-default" value="add">Submit</button>
+                        <input type="hidden" name="action" value="add">
+                        <button type="submit" class="btn btn-default">Submit</button>
                     </div>
                 </div>
             </form>

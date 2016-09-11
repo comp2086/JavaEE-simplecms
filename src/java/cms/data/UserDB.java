@@ -56,11 +56,50 @@ public class UserDB {
 
     public static void update(User updatedUser) {
         // Update routine
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection conn = pool.getConnection();
+        PreparedStatement ps = null;
+        
+        try {
+            String preparedSQL = "UPDATE Users SET firstName = ? WHERE id = ?";
+            ps = conn.prepareStatement(preparedSQL);
+            ps.setString(1, updatedUser.getFirstName());
+            ps.setInt(2, updatedUser.getId());
+            ps.executeUpdate();
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+        
+        DBUtil.closePreparedStatement(ps);
+        pool.freeConnection(conn);
     }
 
-    public static User getUser(int id) {
+    public static User getUser(int userId) {
         // Get a specified user routine
-        return new User();
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection conn = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        User user = null;
+        
+        try {
+            String preparedSQL = "SELECT * FROM Users WHERE id = ?";
+            ps = conn.prepareStatement(preparedSQL);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+            
+            if (rs.first()) {
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setFirstName(rs.getString("firstName"));
+            }
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+        
+        DBUtil.closePreparedStatement(ps);
+        pool.freeConnection(conn);
+        return user;
     }
 
     public static ArrayList<User> list() {

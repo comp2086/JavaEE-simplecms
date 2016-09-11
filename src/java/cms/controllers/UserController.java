@@ -16,7 +16,8 @@ public class UserController extends HttpServlet {
             throws ServletException, IOException {
         
         String url = null;
-    
+        int userId = -1;
+        
         String action = request.getParameter("action");
         
         switch (action)
@@ -28,8 +29,13 @@ public class UserController extends HttpServlet {
             case "add":
                 url = "/user/add.jsp";
                 break;
+            case "edit":
+                userId = Integer.parseInt(request.getParameter("id"));
+                request.setAttribute("user", UserDB.getUser(userId));
+                url = "/user/edit.jsp";
+                break;
             case "delete":
-                int userId = Integer.parseInt(request.getParameter("id"));
+                userId = Integer.parseInt(request.getParameter("id"));
                 UserDB.delete(userId);
                 url = "users?action=list";
                 break;
@@ -44,10 +50,26 @@ public class UserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String firstName = request.getParameter("firstName");
+        String action = request.getParameter("action");
+
+        User user = new User();
+        String firstName = null;
         
-        User newUser = new User(firstName);
-        UserDB.insert(newUser);
+        switch (action)
+        {
+            case "add":
+                firstName = request.getParameter("firstName");
+                user.setFirstName(firstName);
+                UserDB.insert(user);
+                break;
+            case "edit":
+                int userId = Integer.parseInt(request.getParameter("id"));
+                firstName = request.getParameter("firstName");
+                user.setId(userId);
+                user.setFirstName(firstName);
+                UserDB.update(user);
+                break;
+        }
         
         // Show updated list of all users
         response.sendRedirect("users?action=list");
