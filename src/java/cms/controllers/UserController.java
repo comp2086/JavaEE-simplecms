@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cms.business.User;
+import cms.data.ConnectionPool;
 import java.sql.*;
 import java.util.*;
 
@@ -20,14 +21,6 @@ import java.util.*;
  * @author TankJr
  */
 public class UserController extends HttpServlet {
-
-    private void connect() {
-        try {
-           Class.forName("com.mysql.jdbc.Driver"); 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,16 +34,15 @@ public class UserController extends HttpServlet {
         if (action.equals("add")) {
             url = "/add.jsp";
         } else if (action.equals("list")) {
-            String dbURL = "jdbc:mysql://localhost:3306/simplecms";
-            String userName = "root";
-            String password = "sesame";
+            ConnectionPool pool = ConnectionPool.getInstance();
+            Connection conn = pool.getConnection();
+            Statement stmt = null;
+            ResultSet rs = null;
             
-            connect();
-         
-            try (Connection conn = DriverManager.getConnection(dbURL, userName, password)) {
+            try {
                 String sql = "SELECT * FROM Users";
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(sql);
                 
                 ArrayList<User> users = new ArrayList<>();
                 while (rs.next()) {
@@ -59,13 +51,16 @@ public class UserController extends HttpServlet {
                     u.setFirstName(rs.getString("firstName"));
                     users.add(u);
                 }
-                
                 request.setAttribute("users", users);
+                
+                rs.close();
+                stmt.close();
             } catch (SQLException e) {
-                for (Throwable t : e)
-                    t.printStackTrace();
+                System.err.println(e);
             }
             
+            pool.freeConnection(conn);
+                
             url = "/list.jsp";
         }
         
@@ -79,15 +74,13 @@ public class UserController extends HttpServlet {
         String firstName = request.getParameter("firstName");
         User user = new User(firstName);
            
-        String dbURL = "jdbc:mysql://localhost:3306/simplecms";
-        String userName = "root";
-        String password = "sesame";
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection conn = pool.getConnection();
+        PreparedStatement ps = null;
         
-        connect();
-        
-        try (Connection conn = DriverManager.getConnection(dbURL, userName, password)) {
+        try {
             String preparedSQL = "INSERT INTO Users(firstName) VALUES ( ? )";
-            PreparedStatement ps = conn.prepareStatement(preparedSQL);
+            ps = conn.prepareStatement(preparedSQL);
             ps.setString(1, user.getFirstName());
             ps.executeUpdate();
         } catch (SQLException e) {

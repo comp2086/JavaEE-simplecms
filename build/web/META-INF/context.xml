@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/simplecms"/>
+<Context path="/simplecms">
+    <Resource name="jdbc/simplecmsdb" type="javax.sql.DataSource" auth="Container"
+        driverClassName="com.mysql.jdbc.Driver" 
+        url="jdbc:mysql://localhost:3306/simplecmsdb?autoReconnect=true" 
+        username="root" password="sesame" 
+        logAbandoned="true" removeAbandoned="true" removeAbandonedTimeout="60" 
+        maxActive="100" maxIdle="30" maxWait="10000" />
+</Context>
