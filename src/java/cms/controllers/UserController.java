@@ -15,16 +15,26 @@ public class UserController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String url = "/index.jsp";
-        
-        // Get action
+        String url = null;
+    
         String action = request.getParameter("action");
         
-        if (action.equals("add")) {
-            url = "/user/add.jsp";
-        } else if (action.equals("list")) {
-            request.setAttribute("users", UserDB.list());    
-            url = "/user/list.jsp";
+        switch (action)
+        {   
+            case "list":
+                request.setAttribute("users", UserDB.list());    
+                url = "/user/list.jsp";
+                break;
+            case "add":
+                url = "/user/add.jsp";
+                break;
+            case "delete":
+                int userId = Integer.parseInt(request.getParameter("id"));
+                UserDB.delete(userId);
+                url = "users?action=list";
+                break;
+            default:
+                url = "/index.jsp";
         }
         
         request.getRequestDispatcher(url).forward(request, response);

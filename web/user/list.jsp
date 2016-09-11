@@ -3,20 +3,24 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h2 class="text-center">Current Users</h2>
+            <h3 class="text-center">Current Users</h3>
             <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th></th>
                             <th>First Name</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
+                        <c:set var="counter" value="${0}" scope="page" />
                         <c:forEach var="user" items="${users}">
+                            <c:set var="counter" value="${counter + 1}" scope="page" />
                             <tr>
-                                <td>${user.id}</td>
+                                <td>${counter}</td>
                                 <td>${user.firstName}</td>
+                                <td><button type="button" class="btn btn-danger" onclick='location.href = "users?action=delete&id=${user.id}"'>Delete</button></td>
                             </tr>
                         </c:forEach>
                     </tbody>

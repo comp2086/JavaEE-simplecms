@@ -33,8 +33,25 @@ public class UserDB {
         pool.freeConnection(conn);
     }
 
-    public static void delete(User deletedUser) {
+    public static void delete(int userId) {
         // Delete routine
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection conn = pool.getConnection();
+        PreparedStatement ps = null;
+
+        try {
+            String preparedSQL = "DELETE FROM Users WHERE id = ?";
+            ps = conn.prepareStatement(preparedSQL);
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+
+        DBUtil.closePreparedStatement(ps);
+        pool.freeConnection(conn);
     }
 
     public static void update(User updatedUser) {
@@ -43,7 +60,6 @@ public class UserDB {
 
     public static User getUser(int id) {
         // Get a specified user routine
-
         return new User();
     }
 
@@ -54,13 +70,13 @@ public class UserDB {
         Statement stmt = null;
         ResultSet rs = null;
         ArrayList<User> users = null;
-        
+
         try {
             String sql = "SELECT * FROM Users";
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             users = new ArrayList<>();
-            
+
             while (rs.next()) {
                 User u = new User();
                 u.setId(rs.getInt("id"));
@@ -75,7 +91,7 @@ public class UserDB {
         DBUtil.closeResultSet(rs);
         DBUtil.closeStatement(stmt);
         pool.freeConnection(conn);
-        
+
         return users;
     }
 }

@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h2 class="text-center">Add New User</h2>
+            <h3 class="text-center">Add New User</h3>
             <form action="users" method="post" class="form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="firstName">First Name:</label>
