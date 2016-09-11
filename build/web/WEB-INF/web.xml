@@ -3,6 +3,10 @@
     <servlet>
         <servlet-name>UserController</servlet-name>
         <servlet-class>cms.controllers.UserController</servlet-class>
+        <init-param>
+            <param-name>readonly</param-name>
+            <param-value>false</param-value>
+        </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>

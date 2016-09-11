@@ -5,8 +5,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.*;
-import java.util.*;
 
 import cms.business.User;
 import cms.data.*;
@@ -17,7 +15,7 @@ public class UserController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String url = "/index.html";
+        String url = "/index.jsp";
         
         // Get action
         String action = request.getParameter("action");
@@ -43,5 +41,11 @@ public class UserController extends HttpServlet {
         
         // Show updated list of all users
         response.sendRedirect("users?action=list");
+    }
+    
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
     }
 }
