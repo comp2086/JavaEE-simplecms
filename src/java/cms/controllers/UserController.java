@@ -23,10 +23,10 @@ public class UserController extends HttpServlet {
         String action = request.getParameter("action");
         
         if (action.equals("add")) {
-            url = "/add.jsp";
+            url = "/user/add.jsp";
         } else if (action.equals("list")) {
             request.setAttribute("users", UserDB.list());    
-            url = "/list.jsp";
+            url = "/user/list.jsp";
         }
         
         request.getRequestDispatcher(url).forward(request, response);
