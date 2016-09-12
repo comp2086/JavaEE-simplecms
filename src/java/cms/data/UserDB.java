@@ -19,7 +19,7 @@ public class UserDB {
         PreparedStatement ps = null;
 
         try {
-            String preparedSQL = "INSERT INTO Users(firstName) VALUES ( ? )";
+            String preparedSQL = "INSERT INTO users(firstName) VALUES ( ? )";
             ps = conn.prepareStatement(preparedSQL);
             ps.setString(1, newUser.getFirstName());
             ps.executeUpdate();
@@ -40,7 +40,7 @@ public class UserDB {
         PreparedStatement ps = null;
 
         try {
-            String preparedSQL = "DELETE FROM Users WHERE id = ?";
+            String preparedSQL = "DELETE FROM users WHERE id = ?";
             ps = conn.prepareStatement(preparedSQL);
             ps.setInt(1, userId);
             ps.executeUpdate();
@@ -61,7 +61,7 @@ public class UserDB {
         PreparedStatement ps = null;
         
         try {
-            String preparedSQL = "UPDATE Users SET firstName = ? WHERE id = ?";
+            String preparedSQL = "UPDATE users SET firstName = ? WHERE id = ?";
             ps = conn.prepareStatement(preparedSQL);
             ps.setString(1, updatedUser.getFirstName());
             ps.setInt(2, updatedUser.getId());
@@ -83,7 +83,7 @@ public class UserDB {
         User user = null;
         
         try {
-            String preparedSQL = "SELECT * FROM Users WHERE id = ?";
+            String preparedSQL = "SELECT * FROM users WHERE id = ?";
             ps = conn.prepareStatement(preparedSQL);
             ps.setInt(1, userId);
             rs = ps.executeQuery();
@@ -111,7 +111,7 @@ public class UserDB {
         ArrayList<User> users = null;
 
         try {
-            String sql = "SELECT * FROM Users";
+            String sql = "SELECT * FROM users";
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             users = new ArrayList<>();
