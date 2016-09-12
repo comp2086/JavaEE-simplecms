@@ -1,2 +1,2 @@
 # JavaEE-simplecms
-A CRUD JavaEE web app
+CRUD JavaEE web app
